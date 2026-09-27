@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 		// do simulation
 
 
-		sim_tick(&w_space, GetTime());
+		sim_tick(&w_space, GetFrameTime());
 
 		// ---
 
