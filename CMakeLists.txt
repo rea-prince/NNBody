@@ -8,28 +8,34 @@ project(${PROJECT_NAME}
 	LANGUAGES C
 )
 
-file(GLOB SRC_FILES
-	"${CMAKE_SOURCE_DIR}/src/*.c"
-)
-
+file(GLOB SRC_FILES "${CMAKE_SOURCE_DIR}/src/*.c")
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
+# directories
 target_include_directories(${PROJECT_NAME}
 	PUBLIC
 	${CMAKE_SOURCE_DIR}/include
 )
-
-target_link_libraries(${PROJECT_NAME}
+target_link_directories(${PROJECT_NAME}
 	PRIVATE
-	${CMAKE_SOURCE_DIR}/lib/libraylib.a
+	${CMAKE_SOURCE_DIR}/lib
 )
 
-if (WIN32)
+# default libs
+file(GLOB LINK_FILES "${CMAKE_SOURCE_DIR}/lib/*.a")
+target_link_libraries(${PROJECT_NAME}
+	PRIVATE
+	${LINK_FILES}
+)
+
+# os specific stuff
+if(WIN32)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
+		gdi32
 		winmm
 	)
-elseif (UNIX AND NOT APPLE)
+elseif(UNIX AND NOT APPLE)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 		m
@@ -38,7 +44,7 @@ elseif (UNIX AND NOT APPLE)
 		GL
 		X11
 	)
-elseif (APPLE)
+elseif(APPLE)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 		"-framework Cocoa"
