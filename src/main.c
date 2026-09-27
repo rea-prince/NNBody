@@ -1,6 +1,8 @@
 #include <raylib/raylib.h>
 #include <raylib/raygui.h>
+
 #include "world.h"
+#include "sim.h"
 
 int main(int argc, char **argv)
 {
@@ -12,7 +14,7 @@ int main(int argc, char **argv)
 	// ---
 
 	Camera3D camera = {
-		.position = (Vector3) {0.0f, 10.0f, 10.0f},
+		.position = (Vector3) {0.0f, 100.0f, 100.0f},
 		.target = (Vector3) {0.0f, 0.0f, 0.0f},
 		.up = (Vector3) {0.0f, 1.0f, 0.0f},
 		.fovy = 45.0f,
@@ -21,7 +23,15 @@ int main(int argc, char **argv)
 
 	// ---
 
-	World w_space = {0};
+	World w_space = {
+		.max_bodies = BODIES
+	};
+	world_add_body(&w_space,
+		10.0f, 1.0f,
+		(Vector3) {0.1f, 0.2f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f}
+	);
 
 	// ---
 
@@ -35,6 +45,8 @@ int main(int argc, char **argv)
 		// do simulation
 
 
+		sim_tick(&w_space, GetTime());
+
 		// ---
 
 		// draw simulation
@@ -45,14 +57,23 @@ int main(int argc, char **argv)
 			// ---
 
 			BeginMode3D(camera); {
-				// draw objects
 
+				// draw objects
 				for (int i = 0; i < w_space.n_bodies; i++) {
 					Body *body = w_space.bodies + i;
 					DrawSphere(body->position, body->radius, LIME);
+
+					TraceLog(LOG_INFO,
+						"body: %d: pos=(%.2f, %.2f, %.2f), radius=%.2f",
+						i,
+						body->position.x,
+						body->position.y,
+						body->position.z,
+						body->radius
+					);
 				}
 
-				DrawGrid(20, 1.0f);
+				DrawGrid(100, 1.0f);
 			} EndMode3D();
 
 			// ---
