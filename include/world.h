@@ -6,6 +6,7 @@
 #define BODIES 10
 
 typedef struct {
+	Color color;
 	float mass;
 	float radius;
 	Vector3 position;
@@ -19,7 +20,7 @@ typedef struct {
 	Body bodies[BODIES];
 } World;
 
-int world_add_body(World *w, float mass, float radius, Vector3 position,
-				   Vector3 velocity, Vector3 acceleration);
+int world_add_body(World *w, Color color, float mass, float radius,
+				   Vector3 position, Vector3 velocity, Vector3 acceleration);
 
 #endif

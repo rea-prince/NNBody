@@ -2,7 +2,10 @@
 #define VIEW_C
 
 #include <raylib/raylib.h>
+#include <raylib/raymath.h>
 #include <math.h>
+
+#include "world.h"
 
 void draw_grid(Vector3 ref_frame,
 			   int slices, float spacing, Color color)
@@ -50,6 +53,25 @@ void draw_grid(Vector3 ref_frame,
 			line_color
 		);
 	}
+}
+
+
+int draw_bodies(World *w_space, Vector3 ref_frame)
+{
+	for (int i = 0; i < w_space->n_bodies; i++) {
+		Body *body = w_space->bodies + i;
+		DrawSphere(body->position, body->radius, body->color);
+		// draw trajectory
+		DrawLine3D(
+			body->position,
+			Vector3Add(body->position, body->acceleration),
+			RED
+		);
+	}
+
+	draw_grid(ref_frame, 100, 10.0f, DARKGRAY);
+
+	return 1;
 }
 
 

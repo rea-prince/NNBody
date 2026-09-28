@@ -73,6 +73,26 @@ int sim_tick(World *w, double time)
 	return 1;
 }
 
+World sim_let_there_be_light()
+{
+	World w_space = {
+		.max_bodies = BODIES
+	};
+	world_add_body(&w_space, BLUE,
+		81.25f, 6.38f,
+		(Vector3) {0.0f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f}
+	);
+
+	world_add_body(&w_space, WHITE,
+		1.0f, 1.74f,
+		(Vector3) {0.0f, 0.0f, -200.0f},
+		(Vector3) {0.63737f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f}
+	);
+	return w_space;
+}
 
 
 

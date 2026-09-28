@@ -85,6 +85,7 @@
 #define RAYLIB_H
 
 #include <stdarg.h>     // Required for: va_list - Only used by TraceLogCallback
+#include <wchar.h>
 
 #define RAYLIB_VERSION_MAJOR 6
 #define RAYLIB_VERSION_MINOR 0
@@ -1256,6 +1257,7 @@ RLAPI float GetGesturePinchAngle(void);                       // Get gesture pin
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: rcamera)
 //------------------------------------------------------------------------------------
+RLAPI void UpdateCameraEx(Camera *camera, int mode, float zoomSensitivity, float rotationSensitivity);
 RLAPI void UpdateCamera(Camera *camera, int mode);            // Update camera position for selected mode
 RLAPI void UpdateCameraPro(Camera *camera, Vector3 movement, Vector3 rotation, float zoom); // Update camera movement/rotation
 

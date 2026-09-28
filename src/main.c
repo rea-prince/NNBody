@@ -8,6 +8,7 @@
 #include "sim.h"
 #include "view.h"
 
+
 int main(int argc, char **argv)
 {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -15,7 +16,7 @@ int main(int argc, char **argv)
 	SetWindowMinSize(400, 300);
 	DisableCursor();
 
-	// ---
+	// --- camera setup
 
 	Camera3D camera = {
 		.position = (Vector3) {80.0f, 150.0f, 80.0f},
@@ -24,38 +25,20 @@ int main(int argc, char **argv)
 		.fovy = 45.0f,
 		.projection = CAMERA_PERSPECTIVE
 	};
+	Vector3 camera_movement = {0};
 
 	int camera_type = CAMERA_THIRD_PERSON;
 	bool mouse_on = false;
 
 	int target_body = 0;
-	bool lock_position = false;
+	bool reference_center = true;
+	Vector3 reference_frame = {0};
 
-	// ---
+	// --- world space setup
 
-	World w_space = {
-		.max_bodies = BODIES
-	};
-	world_add_body(&w_space,
-		81.25f, 6.38f,
-		(Vector3) {0.0f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f}
-	);
+	World w_space = sim_let_there_be_light();
 
-	world_add_body(&w_space,
-		1.0f, 1.74f,
-		(Vector3) {0.0f, 0.0f, -200.0f},
-		(Vector3) {0.63737f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f}
-	);
-	world_add_body(&w_space,
-		1.0f, 1.74f,
-		(Vector3) {0.0f, 0.0f, 200.0f},
-		(Vector3) {-0.63737f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f}
-	);
-	// ---
+	// --- main loop
 
 	while (!WindowShouldClose()) {
 		// mouse cursor
@@ -68,17 +51,15 @@ int main(int argc, char **argv)
 				mouse_on = true;
 			}
 		}
-		// orbital mode
 		if (IsKeyReleased(KEY_T)) {
-			if (camera_type == CAMERA_THIRD_PERSON)
+			if (camera_type == CAMERA_THIRD_PERSON) {
 				camera_type = CAMERA_FREE;
-			else
+				camera.up = (Vector3) {0.0f, 1.0f, 0.0f};
+			} else {
 				camera_type = CAMERA_THIRD_PERSON;
+			}
 		}
-		// lock mode
-		if (IsKeyReleased(KEY_L)) {
-			lock_position = !lock_position;
-		}
+
 		// body selection
 		if (IsKeyReleased(KEY_ONE))
 			target_body = 0;
@@ -87,54 +68,45 @@ int main(int argc, char **argv)
 		if (IsKeyReleased(KEY_THREE))
 			target_body = 2;
 
-		if (camera_type == CAMERA_THIRD_PERSON) {
+		if (IsKeyReleased(KEY_R))
+			reference_center = !reference_center;
+
+		if (camera_type == CAMERA_THIRD_PERSON)
 			camera.target =  w_space.bodies[target_body].position;
-		}
 
-		UpdateCamera(&camera, camera_type);
+		if (reference_center)
+			reference_frame = (Vector3) {0};
+		else
+			reference_frame = w_space.bodies[target_body].position;
 
-		// ---
+		UpdateCameraEx(&camera, camera_type, 30.0f, 0.003f);
 
-		// do simulation
+		// --- do simulation
 
 		sim_tick(&w_space, GetFrameTime() * TIME_FACTOR);
 
-		// ---
-
-		// draw simulation
+		// --- draw screen
 
 		BeginDrawing(); {
 			ClearBackground(BLACK);
 
-			// ---
+			// --- draw what the camera sees
 
 			BeginMode3D(camera); {
 
-				// draw objects
-				for (int i = 0; i < w_space.n_bodies; i++) {
-					Body *body = w_space.bodies + i;
-					DrawSphere(body->position, body->radius, LIME);
+				// --- draw objects
+				draw_bodies(&w_space, reference_frame);
 
-					// TraceLog(LOG_INFO,
-					// 	"body: %d: pos=(%.2f, %.2f, %.2f), radius=%.2f, acceleration=%.2f",
-					// 	i,
-					// 	body->position.x,
-					// 	body->position.y,
-					// 	body->position.z,
-					// 	body->radius,
-					// 	body->acceleration
-					// );
-				}
-
-				draw_grid(w_space.bodies[target_body].position,100, 10.0f, DARKGRAY);
 			} EndMode3D();
 
-			// ---
+			// --- write text
 
 			const char *fps_text = TextFormat("FPS: %i", GetFPS());
 			const char *frame_time = TextFormat("FrameTime: %02.02f", GetFrameTime());
-			DrawText(fps_text, 10, 20, 20, DARKGRAY);
-			DrawText(frame_time, 10, 40, 20, DARKGRAY);
+			const char *controls = "Target - [1, ..., n]\nCamera - T\nReference frame - R";
+			DrawText(fps_text, 10, 20, 20, WHITE);
+			DrawText(frame_time, 10, 40, 20, WHITE);
+			DrawText(controls, 10, 60, 20, WHITE);
 
 
 		} EndDrawing();
