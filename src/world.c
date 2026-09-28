@@ -3,8 +3,8 @@
 
 #include "world.h"
 
-int world_add_body(World *w, float mass, float radius, Vector3 velocity,
-				   Vector3 acceleration, Vector3 position)
+int world_add_body(World *w, float mass, float radius, Vector3 position,
+				   Vector3 velocity, Vector3 acceleration)
 {
 	if (w->n_bodies == w->max_bodies) {
 		return 0;

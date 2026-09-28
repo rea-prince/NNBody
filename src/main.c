@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 	// ---
 
 	Camera3D camera = {
-		.position = (Vector3) {0.0f, 100.0f, 100.0f},
+		.position = (Vector3) {80.0f, 150.0f, 80.0f},
 		.target = (Vector3) {0.0f, 0.0f, 0.0f},
 		.up = (Vector3) {0.0f, 1.0f, 0.0f},
 		.fovy = 45.0f,
@@ -27,22 +27,30 @@ int main(int argc, char **argv)
 		.max_bodies = BODIES
 	};
 	world_add_body(&w_space,
-		10.0f, 5.0f,
-		(Vector3) {0.1f, 0.0f, 0.2f},
+		81.25f, 6.38f,
+		(Vector3) {0.0f, 0.0f, 0.0f},
 		(Vector3) {0.0f, 0.0f, 0.0f},
 		(Vector3) {0.0f, 0.0f, 0.0f}
 	);
 
 	world_add_body(&w_space,
-		1.0f, 2.0f,
-		(Vector3) {0.0f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f},
-		(Vector3) {8.0f, 0.0f, 0.0f}
+		1.0f, 1.74f,
+		(Vector3) {0.0f, 0.0f, -200.0f},
+		(Vector3) {0.63737f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f}
+	);
+	world_add_body(&w_space,
+		1.0f, 1.74f,
+		(Vector3) {0.0f, 0.0f, 200.0f},
+		(Vector3) {-0.63737f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f}
 	);
 	// ---
 
 	while (!WindowShouldClose()) {
 		// update
+
+		camera.target = w_space.bodies[1].position;
 
 		UpdateCamera(&camera, CAMERA_FREE);
 
@@ -51,14 +59,14 @@ int main(int argc, char **argv)
 		// do simulation
 
 
-		sim_tick(&w_space, GetFrameTime());
+		sim_tick(&w_space, GetFrameTime() * TIME_FACTOR);
 
 		// ---
 
 		// draw simulation
 
 		BeginDrawing(); {
-			ClearBackground(RAYWHITE);
+			ClearBackground(BLACK);
 
 			// ---
 
@@ -80,7 +88,7 @@ int main(int argc, char **argv)
 					// );
 				}
 
-				DrawGrid(100, 1.0f);
+				DrawGrid(100, 10.0f);
 			} EndMode3D();
 
 			// ---

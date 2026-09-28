@@ -1,31 +1,12 @@
 #ifndef SIM_C
 #define SIM_C
 
-#include "raylib/raylib.h"
-#include "world.h"
+#include <raylib/raylib.h>
+#include <raylib/raymath.h>
 #include <math.h>
 
+#include "world.h"
 #define GRAV_CONSTANT 1.0f
-
-static inline
-float vec_magnitude(Vector3 vec)
-{
-	return sqrtf(
-		powf(vec.x, 2) +
-		powf(vec.y, 2) +
-		powf(vec.z, 2)
-	);
-}
-
-static inline
-Vector3 vec_normalize(Vector3 vec, float magnitude)
-{
-	return (Vector3) {
-		vec.x / magnitude,
-		vec.y / magnitude,
-		vec.z / magnitude
-	};
-}
 
 // update position and velocty, and compute for new acceleration
 int sim_tick(World *w, double time)
@@ -57,20 +38,16 @@ int sim_tick(World *w, double time)
 			Body *body_j = w->bodies + j;
 
 			// get normalized direction
-			Vector3 displacement = (Vector3) {
-				body_j->position.x - body_i->position.x,
-				body_j->position.y - body_i->position.y,
-				body_j->position.z - body_i->position.z
-			};
-			float distance = vec_magnitude(displacement);
+			Vector3 displacement = Vector3Subtract(body_j->position, body_i->position);
+			float distance = Vector3Length(displacement);
 			if (distance == 0)
 				continue;
-			Vector3 r = vec_normalize(displacement, distance);
+			Vector3 r = Vector3Normalize(displacement);
 
 			// get magnitude of acceleration
-			float acceleration_scalar =
+			float acceleration_scalar = fabs(
 				GRAV_CONSTANT * (body_j->mass) /
-				powf(distance, 2);
+				powf(distance, 2));
 
 			// add to body's acceleration
 			body_i->acceleration.x += r.x * acceleration_scalar;

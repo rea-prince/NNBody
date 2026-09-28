@@ -19,7 +19,7 @@ typedef struct {
 	Body bodies[BODIES];
 } World;
 
-int world_add_body(World *w, float mass, float radius, Vector3 velocity,
-				   Vector3 acceleration, Vector3 position);
+int world_add_body(World *w, float mass, float radius, Vector3 position,
+				   Vector3 velocity, Vector3 acceleration);
 
 #endif
