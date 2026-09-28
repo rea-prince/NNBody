@@ -1,8 +1,41 @@
 #include <raylib/raylib.h>
+
+#define RAYGUI_IMPLEMENTATION
 #include <raylib/raygui.h>
 
 #include "world.h"
 #include "sim.h"
+
+void draw_grid(int slices, float spacing, Color color)
+{
+	float ends = slices * spacing;
+
+	for (int i = -slices; i <= slices; i++)
+	{
+
+		Color line_color = color;
+
+		// 1.0 = farthest from center; fade by at most 0.7
+		float center_distance = fabs((float) i / slices);
+		float center_fade = 1.0f - (center_distance * 1.0f);
+
+		line_color.a = (unsigned char) (color.a * center_fade);
+
+		// z axis
+		DrawLine3D(
+			(Vector3){ i * spacing, 0, -ends },
+			(Vector3){ i * spacing, 0, ends },
+			line_color
+		);
+
+		// x axis
+		DrawLine3D(
+			(Vector3){ -ends, 0, i * spacing },
+			(Vector3){ ends, 0, i * spacing },
+			line_color
+		);
+	}
+}
 
 int main(int argc, char **argv)
 {
@@ -20,6 +53,10 @@ int main(int argc, char **argv)
 		.fovy = 45.0f,
 		.projection = CAMERA_PERSPECTIVE
 	};
+
+	int camera_type = CAMERA_ORBITAL;
+	bool mouse_on = false;
+	int target_body = 0;
 
 	// ---
 
@@ -50,14 +87,39 @@ int main(int argc, char **argv)
 	while (!WindowShouldClose()) {
 		// update
 
-		camera.target = w_space.bodies[1].position;
+		if (IsKeyReleased(KEY_X)) {
+			if (mouse_on) {
+				DisableCursor();
+				mouse_on = false;
+			} else {
+				EnableCursor();
+				mouse_on = true;
+			}
+		}
 
-		UpdateCamera(&camera, CAMERA_FREE);
+		if (IsKeyReleased(KEY_O)) {
+			if (camera_type == CAMERA_ORBITAL)
+				camera_type = CAMERA_FREE;
+			else
+				camera_type = CAMERA_ORBITAL;
+		}
+
+		if (camera_type == CAMERA_ORBITAL) {
+			camera.target =  w_space.bodies[target_body].position;
+		}
+
+		if (IsKeyReleased(KEY_ONE))
+			target_body = 0;
+		if (IsKeyReleased(KEY_TWO))
+			target_body = 1;
+		if (IsKeyReleased(KEY_THREE))
+			target_body = 2;
+
+		UpdateCamera(&camera, camera_type);
 
 		// ---
 
 		// do simulation
-
 
 		sim_tick(&w_space, GetFrameTime() * TIME_FACTOR);
 
@@ -88,7 +150,7 @@ int main(int argc, char **argv)
 					// );
 				}
 
-				DrawGrid(100, 10.0f);
+				draw_grid(100, 10.0f, DARKGRAY);
 			} EndMode3D();
 
 			// ---
