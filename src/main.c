@@ -27,12 +27,18 @@ int main(int argc, char **argv)
 		.max_bodies = BODIES
 	};
 	world_add_body(&w_space,
-		10.0f, 1.0f,
-		(Vector3) {0.1f, 0.2f, 0.0f},
+		10.0f, 5.0f,
+		(Vector3) {0.1f, 0.0f, 0.2f},
 		(Vector3) {0.0f, 0.0f, 0.0f},
 		(Vector3) {0.0f, 0.0f, 0.0f}
 	);
 
+	world_add_body(&w_space,
+		1.0f, 2.0f,
+		(Vector3) {0.0f, 0.0f, 0.0f},
+		(Vector3) {0.0f, 0.0f, 0.0f},
+		(Vector3) {8.0f, 0.0f, 0.0f}
+	);
 	// ---
 
 	while (!WindowShouldClose()) {
@@ -63,14 +69,15 @@ int main(int argc, char **argv)
 					Body *body = w_space.bodies + i;
 					DrawSphere(body->position, body->radius, LIME);
 
-					TraceLog(LOG_INFO,
-						"body: %d: pos=(%.2f, %.2f, %.2f), radius=%.2f",
-						i,
-						body->position.x,
-						body->position.y,
-						body->position.z,
-						body->radius
-					);
+					// TraceLog(LOG_INFO,
+					// 	"body: %d: pos=(%.2f, %.2f, %.2f), radius=%.2f, acceleration=%.2f",
+					// 	i,
+					// 	body->position.x,
+					// 	body->position.y,
+					// 	body->position.z,
+					// 	body->radius,
+					// 	body->acceleration
+					// );
 				}
 
 				DrawGrid(100, 1.0f);

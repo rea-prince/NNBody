@@ -8,7 +8,8 @@
 #define GRAV_CONSTANT 1.0f
 
 static inline
-float vec_magnitude(Vector3 vec) {
+float vec_magnitude(Vector3 vec)
+{
 	return sqrtf(
 		powf(vec.x, 2) +
 		powf(vec.y, 2) +
@@ -17,7 +18,8 @@ float vec_magnitude(Vector3 vec) {
 }
 
 static inline
-Vector3 vec_normalize(Vector3 vec, float magnitude) {
+Vector3 vec_normalize(Vector3 vec, float magnitude)
+{
 	return (Vector3) {
 		vec.x / magnitude,
 		vec.y / magnitude,
@@ -26,11 +28,17 @@ Vector3 vec_normalize(Vector3 vec, float magnitude) {
 }
 
 // update position and velocty, and compute for new acceleration
-int sim_tick(World *w, double time) {
+int sim_tick(World *w, double time)
+{
 	// for a second, i was worried this would not work because of ordering,
 	// before i remembered that a property of vectorspaces is commutativity!
 
 	int n_b = w->n_bodies;
+
+	// TraceLog(LOG_INFO,
+	// 	"ticking at delta time=%.10lf",
+	// 	time
+	// );
 
 	for (int i = 0; i < n_b; i++) {
 		Body *body_i = w->bodies + i;
@@ -77,13 +85,13 @@ int sim_tick(World *w, double time) {
 	for (int i = 0; i < n_b; i++) {
 		Body *body = w->bodies + i;
 
-		body->position.x += body->velocity.x * time;
-		body->position.y += body->velocity.y * time;
-		body->position.z += body->velocity.z * time;
+		body->position.x += (body->velocity.x * time);
+		body->position.y += (body->velocity.y * time);
+		body->position.z += (body->velocity.z * time);
 
-		body->velocity.x += body->acceleration.x;
-		body->velocity.y += body->acceleration.y;
-		body->velocity.z += body->acceleration.z;
+		body->velocity.x += (body->acceleration.x * time);
+		body->velocity.y += (body->acceleration.y * time);
+		body->velocity.z += (body->acceleration.z * time);
 	}
 	return 1;
 }
