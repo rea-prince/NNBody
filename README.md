@@ -11,6 +11,7 @@ cmake --build build
 
 ## TO DO
 
+- [x] Improve grid visibility
 - [ ] Improve camera view
 	- [ ] Speed
 	- [ ] Sensitivity

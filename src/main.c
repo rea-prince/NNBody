@@ -1,41 +1,12 @@
 #include <raylib/raylib.h>
+#include <raylib/raymath.h>
 
 #define RAYGUI_IMPLEMENTATION
 #include <raylib/raygui.h>
 
 #include "world.h"
 #include "sim.h"
-
-void draw_grid(int slices, float spacing, Color color)
-{
-	float ends = slices * spacing;
-
-	for (int i = -slices; i <= slices; i++)
-	{
-
-		Color line_color = color;
-
-		// 1.0 = farthest from center; fade by at most 0.7
-		float center_distance = fabs((float) i / slices);
-		float center_fade = 1.0f - (center_distance * 1.0f);
-
-		line_color.a = (unsigned char) (color.a * center_fade);
-
-		// z axis
-		DrawLine3D(
-			(Vector3){ i * spacing, 0, -ends },
-			(Vector3){ i * spacing, 0, ends },
-			line_color
-		);
-
-		// x axis
-		DrawLine3D(
-			(Vector3){ -ends, 0, i * spacing },
-			(Vector3){ ends, 0, i * spacing },
-			line_color
-		);
-	}
-}
+#include "view.h"
 
 int main(int argc, char **argv)
 {
@@ -54,9 +25,11 @@ int main(int argc, char **argv)
 		.projection = CAMERA_PERSPECTIVE
 	};
 
-	int camera_type = CAMERA_ORBITAL;
+	int camera_type = CAMERA_THIRD_PERSON;
 	bool mouse_on = false;
+
 	int target_body = 0;
+	bool lock_position = false;
 
 	// ---
 
@@ -85,9 +58,8 @@ int main(int argc, char **argv)
 	// ---
 
 	while (!WindowShouldClose()) {
-		// update
-
-		if (IsKeyReleased(KEY_X)) {
+		// mouse cursor
+		if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 			if (mouse_on) {
 				DisableCursor();
 				mouse_on = false;
@@ -96,24 +68,28 @@ int main(int argc, char **argv)
 				mouse_on = true;
 			}
 		}
-
-		if (IsKeyReleased(KEY_O)) {
-			if (camera_type == CAMERA_ORBITAL)
+		// orbital mode
+		if (IsKeyReleased(KEY_T)) {
+			if (camera_type == CAMERA_THIRD_PERSON)
 				camera_type = CAMERA_FREE;
 			else
-				camera_type = CAMERA_ORBITAL;
+				camera_type = CAMERA_THIRD_PERSON;
 		}
-
-		if (camera_type == CAMERA_ORBITAL) {
-			camera.target =  w_space.bodies[target_body].position;
+		// lock mode
+		if (IsKeyReleased(KEY_L)) {
+			lock_position = !lock_position;
 		}
-
+		// body selection
 		if (IsKeyReleased(KEY_ONE))
 			target_body = 0;
 		if (IsKeyReleased(KEY_TWO))
 			target_body = 1;
 		if (IsKeyReleased(KEY_THREE))
 			target_body = 2;
+
+		if (camera_type == CAMERA_THIRD_PERSON) {
+			camera.target =  w_space.bodies[target_body].position;
+		}
 
 		UpdateCamera(&camera, camera_type);
 
@@ -150,7 +126,7 @@ int main(int argc, char **argv)
 					// );
 				}
 
-				draw_grid(100, 10.0f, DARKGRAY);
+				draw_grid(w_space.bodies[target_body].position,100, 10.0f, DARKGRAY);
 			} EndMode3D();
 
 			// ---
