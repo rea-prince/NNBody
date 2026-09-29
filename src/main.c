@@ -4,6 +4,8 @@
 #define RAYGUI_IMPLEMENTATION
 #include <raylib/raygui.h>
 
+#include <raylib/style_genesis.h>
+
 #include "world.h"
 #include "sim.h"
 #include "view.h"
@@ -12,9 +14,11 @@
 int main(int argc, char **argv)
 {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	InitWindow(800, 600, "N's N-Body");
+	InitWindow(1600, 900, "N's N-Body");
 	SetWindowMinSize(400, 300);
 	DisableCursor();
+
+	GuiLoadStyleGenesis();
 
 	// --- camera setup
 
@@ -79,7 +83,7 @@ int main(int argc, char **argv)
 		else
 			reference_frame = w_space.bodies[target_body].position;
 
-		UpdateCameraEx(&camera, camera_type, 30.0f, 0.003f);
+		UpdateCameraEx(&camera, camera_type, 50.0f, 0.003f);
 
 		// --- do simulation
 
@@ -101,13 +105,8 @@ int main(int argc, char **argv)
 
 			// --- write text
 
-			const char *fps_text = TextFormat("FPS: %i", GetFPS());
-			const char *frame_time = TextFormat("FrameTime: %02.02f", GetFrameTime());
-			const char *controls = "Target - [1, ..., n]\nCamera - T\nReference frame - R";
-			DrawText(fps_text, 10, 20, 20, WHITE);
-			DrawText(frame_time, 10, 40, 20, WHITE);
-			DrawText(controls, 10, 60, 20, WHITE);
 
+			draw_gui(&w_space);
 
 		} EndDrawing();
 	}

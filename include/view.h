@@ -6,5 +6,6 @@
 void draw_grid(Vector3 ref_frame,
 			   int slices, float spacing, Color color);
 int draw_bodies(World *w_space, Vector3 ref_frame);
+int draw_gui(World *w_space);
 
 #endif

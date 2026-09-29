@@ -78,18 +78,25 @@ World sim_let_there_be_light()
 	World w_space = {
 		.max_bodies = BODIES
 	};
+	world_add_body(&w_space, YELLOW,
+		26715.0f, 100.00f,
+		(Vector3) { 0.0f, 0.0f, 0.0f },
+		(Vector3) { 0.0f, 0.0f, 0.0f },
+		(Vector3) { 0.0f, 0.0f, 0.0f }
+	);
+
 	world_add_body(&w_space, BLUE,
 		81.25f, 6.38f,
-		(Vector3) {0.0f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f}
+		(Vector3) { 2000.0f, 0.0f, 0.0f },
+		(Vector3) { 0.0f, 0.0f, 3.655f },
+		(Vector3) { 0.0f, 0.0f, 0.0f }
 	);
 
 	world_add_body(&w_space, WHITE,
 		1.0f, 1.74f,
-		(Vector3) {0.0f, 0.0f, -200.0f},
-		(Vector3) {0.63737f, 0.0f, 0.0f},
-		(Vector3) {0.0f, 0.0f, 0.0f}
+		(Vector3) { 2200.0f, 0.0f, 0.0f },
+		(Vector3) { 0.0f, 0.0f, 4.296f },
+		(Vector3) { 0.0f, 0.0f, 0.0f }
 	);
 	return w_space;
 }

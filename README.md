@@ -19,4 +19,8 @@ cmake --build build
 	- [x] Speed
 	- [X] Sensitivity
 	- [x] Movemenet
+- [ ] Add velocity and acceleration arrow
 - [ ] Implement body GUI view
+	- [ ] List of bodies
+	- [ ] Controls for each body
+	- [ ] Selectable body
