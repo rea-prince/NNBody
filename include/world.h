@@ -20,6 +20,9 @@ typedef struct {
 	int n_bodies;
 	int max_bodies;
 	Body bodies[BODIES];
+
+	float GRAV_CONSTANT;
+	double TIME_SCALE;
 } World;
 
 int world_add_body(World *w, char *name, Color color, float mass, float radius,

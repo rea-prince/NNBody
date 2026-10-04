@@ -6,7 +6,6 @@
 #include <math.h>
 
 #include "world.h"
-#define GRAV_CONSTANT 1.0f
 
 // update position and velocty, and compute for new acceleration
 int sim_tick(World *w, double time)
@@ -46,7 +45,7 @@ int sim_tick(World *w, double time)
 
 			// get magnitude of acceleration
 			float acceleration_scalar = fabs(
-				GRAV_CONSTANT * (body_j->mass) /
+				w->GRAV_CONSTANT * (body_j->mass) /
 				powf(distance, 2));
 
 			// add to body's acceleration
@@ -76,7 +75,9 @@ int sim_tick(World *w, double time)
 World sim_let_there_be_light()
 {
 	World w_space = {
-		.max_bodies = BODIES
+		.max_bodies = BODIES,
+		.GRAV_CONSTANT = 1.0f,
+		.TIME_SCALE = 20.0f
 	};
 	world_add_body(&w_space, "sun", YELLOW,
 		26715.0f, 100.00f,

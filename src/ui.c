@@ -30,7 +30,8 @@ int ui_draw_property(UISideBar *sb, int x, int y, int w, int h,
 
 int ui_draw(World *w_space, UISideBar *sb)
 {
-	// performance group position
+	// --- performance group
+
 	float perf_x = sb->x + sb->margin_x;
 	float perf_y = sb->y + sb->margin_y;
 
@@ -38,34 +39,55 @@ int ui_draw(World *w_space, UISideBar *sb)
 	// sb width - margin on left and right
 	float perf_w = sb->w - (sb->margin_x * 2);
 	// rows of text + padding + spacing
-	float perf_h = (sb->padding * 2) + (sb->label_height * 2) + sb->spacing;
+	float perf_h = (sb->padding * 2) + (sb->label_height * 2);
 
 	GuiGroupBox((Rectangle)
 		{ perf_x, perf_y, perf_w, perf_h },
 		"Performance"
 	);
 
-	// properties
+	// performance properties
 
 	float perf_content_x = perf_x + sb->padding; // group x + padding
 	float perf_row1_y = perf_y + sb->padding;    // group y + padding
-	float perf_row2_y =
-		perf_row1_y + sb->label_height + sb->spacing; // row 1 +  spacing + height
+	float perf_row2_y = perf_row1_y + sb->label_height; // row 1 + height
 
 	ui_draw_property(sb, perf_content_x, perf_row1_y, perf_w, perf_h,
 		"Framerate", TextFormat("%i FPS", GetFPS()));
 	ui_draw_property(sb, perf_content_x, perf_row2_y, perf_w, perf_h,
 		"Frametime", TextFormat("%.2f ms", GetFrameTime() * 1000.0f));
 
-	// bodies
+	// --- world group
+
+	float world_x = perf_x;
+	float world_y = perf_y + perf_h + sb->spacing;
+
+	float world_w = perf_w;
+	float world_h = perf_h;
+
+	GuiGroupBox((Rectangle)
+		{ world_x, world_y, world_w, world_h},
+		 "World"
+	);
+
+	float world_content_x = perf_content_x;
+	float world_row1_x = world_y + sb->padding;    // group y + padding
+	float world_row2_y = world_row1_x + sb->label_height; // row 1 + height
+
+	ui_draw_property(sb, world_content_x, world_row1_x, world_w, world_h,
+		"Biggy G", TextFormat("%.2f (N*m^2)/kg^2", w_space->GRAV_CONSTANT));
+	ui_draw_property(sb, world_content_x, world_row2_y, world_w, world_h,
+		"Time Scale", TextFormat("%.2f x", w_space->TIME_SCALE));
+
+	// --- bodies group
 
 	float body_x = perf_x;
-	float body_y = perf_y + perf_h + sb->spacing;
+	float body_y = world_y + world_h + sb->spacing;
 
 	float body_w = perf_w;
 	float body_h =
-		(sb->padding * 2) + ((sb->label_height * N_PROPERTIES) + (sb->spacing)) * w_space->n_bodies;
-
+		(sb->padding * 2) + (sb->label_height * N_PROPERTIES) +
+		(sb->label_height * N_PROPERTIES + sb->spacing) * (w_space->n_bodies - 1);
 
 	GuiGroupBox((Rectangle)
 		{ body_x, body_y, body_w, body_h},

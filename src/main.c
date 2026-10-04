@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
 		// --- do simulation
 
-		sim_tick(&w_space, GetFrameTime() * TIME_FACTOR);
+		sim_tick(&w_space, GetFrameTime() * w_space.TIME_SCALE);
 
 		// --- draw screen
 
