@@ -78,7 +78,7 @@ World sim_let_there_be_light()
 	World w_space = {
 		.max_bodies = BODIES
 	};
-	world_add_body(&w_space,"sun", YELLOW,
+	world_add_body(&w_space, "sun", YELLOW,
 		26715.0f, 100.00f,
 		(Vector3) { 0.0f, 0.0f, 0.0f },
 		(Vector3) { 0.0f, 0.0f, 0.0f },

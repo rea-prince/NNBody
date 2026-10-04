@@ -10,7 +10,7 @@ int world_add_body(World *w, char *name, Color color, float mass, float radius,
 	if (w->n_bodies == w->max_bodies) {
 		return 0;
 	}
-	strncpy(w->bodies[w->n_bodies].name, name, BODY_NAME_LEN);
+	strcpy(w->bodies[w->n_bodies].name, name);
 	w->bodies[w->n_bodies] = (Body) {
 		.color = color,
 		.mass = mass,

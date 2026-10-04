@@ -11,8 +11,6 @@ typedef struct {
 	float spacing;
 
 	float label_height;
-	float body_card_height;
-
 	unsigned int elements;
 	unsigned int font_size;
 } UISideBar;

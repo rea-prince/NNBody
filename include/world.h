@@ -14,16 +14,6 @@ typedef struct {
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 acceleration;
-
-	// gui controllers
-	bool name_edit_mode;
-    bool p_edit_mode[3]; // x, y, z
-    bool v_edit_mode[3]; // x, y, z
-    bool a_edit_mode[3]; // x, y, z
-    bool m_edit_mode;
-    bool r_edit_mode;
-    bool color_dropdown_edit_mode;
-    int color_dropdown_active;
 } Body;
 
 typedef struct {
