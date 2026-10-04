@@ -12,7 +12,7 @@ cmake --build build
 > [!Note]
 > Note that this uses a modified version of raylib (particularly for the camera).
 
-## TO DO
+<!--## TO DO
 
 - [x] Improve grid visibility
 - [x] Improve camera view
@@ -21,6 +21,6 @@ cmake --build build
 	- [x] Movemenet
 - [x] Add velocity and acceleration arrow
 - [ ] Implement body GUI view
-	- [ ] List of bodies
+	- [X] List of bodies
 	- [ ] Controls for each body
-	- [ ] Selectable body
+	- [ ] Selectable body-->
