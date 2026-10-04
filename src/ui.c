@@ -107,12 +107,12 @@ int ui_draw(World *w_space, UISideBar *sb)
 		ui_draw_property(sb,
 			body_content_x, body_row_y + sb->label_height*1,
 			body_w, body_h,
-			"Mass", TextFormat("%.2f m",body->mass)
+			"Mass", TextFormat("%.2f kg",body->mass)
 		);
 		ui_draw_property(sb,
 			body_content_x, body_row_y + sb->label_height*2,
 			body_w, body_h,
-			"Radius", TextFormat("%.2f kg",body->radius)
+			"Radius", TextFormat("%.2f m",body->radius)
 		);
 		ui_draw_property(sb,
 			body_content_x, body_row_y + sb->label_height*3,
