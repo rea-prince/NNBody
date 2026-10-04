@@ -15,7 +15,15 @@ FetchContent_Declare(
 	GIT_REPOSITORY https://github.com/raysan5/raylib.git
 	GIT_TAG 6.0
 )
-FetchContent_MakeAvailable(raylib)
+
+find_library(RAYLIB_LIB_PATH
+	raylib
+	PATHS "${CMAKE_SOURCE_DIR}/lib"
+)
+if(NOT RAYLIB_LIB_PATH)
+	FetchContent_MakeAvailable(raylib)
+endif()
+
 
 file(GLOB SRC_FILES "${CMAKE_SOURCE_DIR}/src/*.c")
 add_executable(${PROJECT_NAME} ${SRC_FILES})
