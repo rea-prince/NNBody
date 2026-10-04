@@ -122,12 +122,12 @@ int ui_draw(World *w_space, UISideBar *sb)
 		ui_draw_property(sb,
 			body_content_x, body_row_y + sb->label_height*4,
 			body_w, body_h,
-			"Velocity", TextFormat("%.2f", Vector3Length(body->velocity))
+			"|Velocity|", TextFormat("%.2f m/s", Vector3Length(body->velocity))
 		);
 		ui_draw_property(sb,
 			body_content_x, body_row_y + sb->label_height*5,
 			body_w, body_h,
-			"Acceleration", TextFormat("%.2f", Vector3Length(body->acceleration))
+			"|Acceleration|", TextFormat("%.2f m/s^2", Vector3Length(body->acceleration))
 		);
 		body_row_y += (sb->label_height*6) + sb->spacing;
 	}
