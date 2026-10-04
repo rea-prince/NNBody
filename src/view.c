@@ -3,13 +3,10 @@
 
 #include <raylib/raylib.h>
 #include <raylib/raymath.h>
-#include <math.h>
+#include <raylib/raygui.h>
 
-#include "raylib/raygui.h"
 #include "world.h"
 
-#define VIS_VEL_SCALE 10.0f
-#define VIS_ACC_SCALE 1000.0f
 #define VECTOR_RADIUS 1.0f
 
 void draw_grid(Vector3 ref_frame,
@@ -110,40 +107,5 @@ int draw_bodies(World *w_space, Vector3 ref_frame)
 
 	return 1;
 }
-
-int draw_gui(World *w_space)
-{
-
-	GuiPanel(
-		(Rectangle) {0, 0, 250, GetScreenHeight()},
-		"#001#Bodies"
-	);
-	const char *fps_text = TextFormat("FPS: %i", GetFPS());
-	const char *frame_time = TextFormat("FrameTime: %02.02f", GetFrameTime());
-	const char *controls = "Target - [1, ..., n]\nCamera - T\nReference frame - R";
-	DrawText(fps_text, 10, 30, 20, WHITE);
-	DrawText(frame_time, 10, 50, 20, WHITE);
-	DrawText(controls, 10, 70, 20, WHITE);
-
-	for (int i = 0; i < w_space->n_bodies; i++) {
-		// container
-			// index
-
-			// mass
-
-			// radius
-
-			//
-
-	}
-
-	// GuiButton(
-	// 	(Rectangle) {24, 24, 160, 30},
-	// 	"#001#Test"
-	// );
-
-	return 1;
-}
-
 
 #endif

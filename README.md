@@ -15,11 +15,11 @@ cmake --build build
 ## TO DO
 
 - [x] Improve grid visibility
-- [X] Improve camera view
+- [x] Improve camera view
 	- [x] Speed
-	- [X] Sensitivity
+	- [x] Sensitivity
 	- [x] Movemenet
-- [ ] Add velocity and acceleration arrow
+- [x] Add velocity and acceleration arrow
 - [ ] Implement body GUI view
 	- [ ] List of bodies
 	- [ ] Controls for each body

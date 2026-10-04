@@ -2,14 +2,16 @@
 #define WORLD_C
 
 #include "world.h"
+#include <string.h>
 
-int world_add_body(World *w, Color color, float mass, float radius,
+int world_add_body(World *w, char *name, Color color, float mass, float radius,
 				   Vector3 position, Vector3 velocity, Vector3 acceleration)
 {
 	if (w->n_bodies == w->max_bodies) {
 		return 0;
 	}
-	w->bodies[w->n_bodies++] = (Body) {
+	strncpy(w->bodies[w->n_bodies].name, name, BODY_NAME_LEN);
+	w->bodies[w->n_bodies] = (Body) {
 		.color = color,
 		.mass = mass,
 		.radius = radius,
@@ -17,6 +19,7 @@ int world_add_body(World *w, Color color, float mass, float radius,
 		.velocity = velocity,
 		.acceleration = acceleration
 	};
+	w->n_bodies++;
 	return 1;
 }
 

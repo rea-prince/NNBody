@@ -3,12 +3,12 @@
 
 #define RAYGUI_IMPLEMENTATION
 #include <raylib/raygui.h>
-
 #include <raylib/style_genesis.h>
 
 #include "world.h"
 #include "sim.h"
 #include "view.h"
+#include "ui.h"
 
 
 int main(int argc, char **argv)
@@ -42,6 +42,24 @@ int main(int argc, char **argv)
 
 	World w_space = sim_let_there_be_light();
 
+	// --- side bar setup
+
+	UISideBar sb = {
+		.x = 0,
+		.y = 0,
+		.w = GetScreenWidth() * 0.2,
+		.h = GetScreenHeight(),
+
+		.margin_x = 8.0f,
+		.margin_y = 24.0f,
+		.padding = 12.0f,
+		.spacing = 8.0f,
+
+		.label_height = 20.0f,
+		.body_card_height = 150.0f,
+
+		.font_size = 10
+	};
 	// --- main loop
 
 	while (!WindowShouldClose()) {
@@ -85,6 +103,9 @@ int main(int argc, char **argv)
 
 		UpdateCameraEx(&camera, camera_type, 50.0f, 0.003f);
 
+		sb.h = GetScreenHeight();
+		sb.w = GetScreenWidth() * 0.2;
+
 		// --- do simulation
 
 		sim_tick(&w_space, GetFrameTime() * TIME_FACTOR);
@@ -105,8 +126,7 @@ int main(int argc, char **argv)
 
 			// --- write text
 
-
-			draw_gui(&w_space);
+			ui_draw(&w_space, &sb);
 
 		} EndDrawing();
 	}

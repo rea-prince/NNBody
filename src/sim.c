@@ -78,21 +78,21 @@ World sim_let_there_be_light()
 	World w_space = {
 		.max_bodies = BODIES
 	};
-	world_add_body(&w_space, YELLOW,
+	world_add_body(&w_space,"sun", YELLOW,
 		26715.0f, 100.00f,
 		(Vector3) { 0.0f, 0.0f, 0.0f },
 		(Vector3) { 0.0f, 0.0f, 0.0f },
 		(Vector3) { 0.0f, 0.0f, 0.0f }
 	);
 
-	world_add_body(&w_space, BLUE,
+	world_add_body(&w_space, "earth",BLUE,
 		81.25f, 6.38f,
 		(Vector3) { 2000.0f, 0.0f, 0.0f },
 		(Vector3) { 0.0f, 0.0f, 3.655f },
 		(Vector3) { 0.0f, 0.0f, 0.0f }
 	);
 
-	world_add_body(&w_space, WHITE,
+	world_add_body(&w_space, "moon", WHITE,
 		1.0f, 1.74f,
 		(Vector3) { 2200.0f, 0.0f, 0.0f },
 		(Vector3) { 0.0f, 0.0f, 4.296f },
