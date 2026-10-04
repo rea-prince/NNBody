@@ -53,12 +53,13 @@ int main(int argc, char **argv)
 		.margin_x = 8.0f,
 		.margin_y = 16.0f,
 		.padding = 12.0f,
-		.spacing = 8.0f,
+		.spacing = 12.0f,
 
 		.label_height = 20.0f,
 
 		.font_size = 10
 	};
+
 	// --- main loop
 
 	while (!WindowShouldClose()) {
