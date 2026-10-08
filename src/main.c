@@ -101,7 +101,8 @@ int main(int argc, char **argv)
 		else
 			reference_frame = w_space.bodies[target_body].position;
 
-		UpdateCameraEx(&camera, camera_type, 50.0f, 0.003f);
+		// UpdateCameraEx(&camera, camera_type, 50.0f, 0.003f);
+		UpdateCamera(&camera, camera_type);
 
 		sb.h = GetScreenHeight();
 		sb.w = GetScreenWidth() * 0.2;
